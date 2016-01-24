@@ -1,36 +1,71 @@
 package com.theboss.jackli.friendtain;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity
 {
+    ImageView sendTextImg;
+    String txtphoneNo;
+    String txtMessage;
+    List<ContactPerson> contactsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        sendTextImg = (ImageView)findViewById(R.id.imageView_go);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener()
+        contactsList.add(new ContactPerson("Jack", "6138882316"));
+        contactsList.add(new ContactPerson("Luis", "6133070645"));
+        contactsList.add(new ContactPerson("Ly", "9057589989"));
+        contactsList.add(new ContactPerson("Radu", "4389928065"));
+
+        sendTextImg.setOnClickListener(new View.OnClickListener()
         {
-            @Override
             public void onClick(View view)
             {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                sendSMSMessage();
             }
         });
-        //todo testing 12
+    }
+
+    protected void sendSMSMessage()
+    {
+        Log.i("Send SMS", "");
+
+        Random generator = new Random();
+
+        ContactPerson lPerson = contactsList.get(generator.nextInt(contactsList.size()));
+        txtphoneNo = lPerson.getPhoneNumber();
+        txtMessage = "Hey haven't spoken to you in a while, how's it going?";
+
+        try
+        {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(txtphoneNo, null, txtMessage, null,
+                    null);
+            Toast.makeText(getApplicationContext(), "SMS sent", Toast
+                    .LENGTH_LONG).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(), "SMS failed, please try " +
+                    "again", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -57,4 +92,5 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
 }
