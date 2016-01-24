@@ -1,14 +1,18 @@
 package com.theboss.jackli.friendtain;
 
 import android.os.Bundle;
+import android.provider.Telephony;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.nuance.nina.mmf.MMFController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +24,7 @@ public class MainActivity extends AppCompatActivity
     String txtphoneNo;
     String txtMessage;
     List<ContactPerson> contactsList = new ArrayList<>();
+    List<Integer> smsImageList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,6 +45,27 @@ public class MainActivity extends AppCompatActivity
                 sendSMSMessage();
             }
         });
+
+//        //listen button
+//        final Button dictationButton = (Button) rootView.findViewById(R.id.dictationButton);
+//        dictationButton.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                if (!doneRecording){
+//                    MMFController.getInstance().stopRecordingAudio();
+//                    dictationButton.setText("Dictate");
+//                    dictationButton.setEnabled(false);
+//                    doneRecording = true;
+//                }
+//                else{
+//                    MMFController.getInstance().startListeningForRecognition();
+//                    dictationButton.setText("Done");
+//                    doneRecording = false;
+//                }
+//            }
+//        });
     }
 
     protected void sendSMSMessage()
